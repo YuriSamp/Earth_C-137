@@ -4,6 +4,8 @@ import { IPersonagens } from '../../interfaces/personagens';
 import { Input, Select, Option } from '@material-tailwind/react';
 import { IFiltro } from 'interfaces/Filtro';
 import { http } from 'util/http';
+import { useRecoilValue } from 'recoil';
+import { darkMode } from 'state/atom';
 
 export const Home = () => {
 
@@ -14,147 +16,106 @@ export const Home = () => {
   const [MaisPersonagens, setMaisPersonagens] = useState(true);
   const [SemPersonagens, setSemPersonagens] = useState(false);
   const [Page, setPage] = useState(1);
+  const DarkMode = useRecoilValue(darkMode);
+  const [contador, setContador] = useState(0);
+  const [contadorObjetos, setContadorObjetos] = useState(20);
 
   useEffect(() => {
 
-    if (FiltroSpecies !== 'all') {
+    http.get(`character/?page=${Page}`)
+      .then(resp => {
+        setObj(resp.data.results);
+        setContador(resp.data.info.pages);
+        setContadorObjetos(resp.data.info.count);
+      });
+    if (FiltroSpecies !== '' && FiltroStatus === '' && Nome === '') {
       http.get<IFiltro>(`character/?species=${FiltroSpecies}&page=${Page}`)
-        .then(response => {
-          setObj(response.data.results);
-  
-          console.log(response.data);
-          if (response.data.info.count < 20) {
-            setMaisPersonagens(false);
-          } else {
-            setMaisPersonagens(true);
-          }
-
-          if (response.data.info.count === 0) {
-            setSemPersonagens(true);
-          }
-          else {
-            setSemPersonagens(false);
-          }
+        .then(resp => {
+          setObj(resp.data.results);
+          setContador(resp.data.info.pages);
+          setContadorObjetos(resp.data.info.count);
+          console.log(contadorObjetos);
+          console.log(contador);
         }
         );
     }
-
-
-    if (FiltroStatus !== 'all') {
+    if (FiltroStatus !== '') {
       http.get<IFiltro>(`character/?status=${FiltroStatus}&page=${Page}`)
-        .then(response => {
-          setObj(response.data.results);
- 
-          if (response.data.info.count < 20) {
-            setMaisPersonagens(false);
-          } else {
-            setMaisPersonagens(true);
-          }
-
-          if (response.data.info.count === 0) {
-            setSemPersonagens(true);
-          }
-          else {
-            setSemPersonagens(false);
-          }
+        .then(resp => {
+          setObj(resp.data.results);
+          setContador(resp.data.info.pages);
+          setContadorObjetos(resp.data.info.count);
         }
         );
     }
-    if (FiltroSpecies !== 'all' && FiltroStatus !== 'all') {
+    if (FiltroSpecies !== 'all' && FiltroStatus === 'all') {
       http.get<IFiltro>(`character/?status=${FiltroStatus}&species=${FiltroSpecies}&page=${Page}`)
-        .then(response => {
-          setObj(response.data.results);
-  
-          if (response.data.info.count < 20) {
-            setMaisPersonagens(false);
-          } else {
-            setMaisPersonagens(true);
-          }
-
-          if (response.data.info.count === 0) {
-            setSemPersonagens(true);
-          }
-          else {
-            setSemPersonagens(false);
-          }
+        .then(resp => {
+          setObj(resp.data.results);
+          setContador(resp.data.info.pages);
+          setContadorObjetos(resp.data.info.count);
         }
         );
     }
     if (FiltroSpecies !== 'all' && FiltroStatus !== 'all' && Nome === '') {
       http.get<IFiltro>(`character/?status=${FiltroStatus}&species=${FiltroSpecies}&page=${Page}`)
-        .then(response => {
-          setObj(response.data.results);
-     
-          if (response.data.info.count < 20) {
-            setMaisPersonagens(false);
-          } else {
-            setMaisPersonagens(true);
-          }
-
-          if (response.data.info.count === 0) {
-            setSemPersonagens(true);
-          }
-          else {
-            setSemPersonagens(false);
-          }
+        .then(resp => {
+          setObj(resp.data.results);
+          setContador(resp.data.info.pages);
+          setContadorObjetos(resp.data.info.count);
         }
         );
     }
     if (FiltroSpecies !== 'all' && FiltroStatus !== 'all' && Nome !== '') {
       http.get<IFiltro>(`character/?status=${FiltroStatus}&species=${FiltroSpecies}&name=${Nome}&page=${Page}`)
-        .then(response => {
-          setObj(response.data.results);
-    
-          if (response.data.info.count < 20) {
-            setMaisPersonagens(false);
-          } else {
-            setMaisPersonagens(true);
-          }
-          if (response.data.info.count === 0) {
-            setSemPersonagens(true);
-          }
-          else {
-            setSemPersonagens(false);
-          }
+        .then(resp => {
+          setObj(resp.data.results);
+          setContador(resp.data.info.pages);
+          setContadorObjetos(resp.data.info.count);
         }
         );
     }
     if (Nome !== '' && FiltroSpecies === 'all' && FiltroStatus === 'all') {
       http.get<IFiltro>(`character/?name=${Nome}&page=${Page}`)
-        .then(response => {
-          setObj(response.data.results);
-         
-          if (response.data.info.count < 20) {
-            setMaisPersonagens(false);
-          }
+        .then(resp => {
+          setObj(resp.data.results);
+          setContador(resp.data.info.pages);
+          setContadorObjetos(resp.data.info.count);
         }
         );
     }
-  }, [FiltroSpecies, FiltroStatus, Nome, Page],);
+
+    // Comparação de Pagina
+
+    if (Page > contador) {
+      setPage(1);
+    }
+
+    if (Page < 1) {
+      setPage(contador);
+    }
+
+    // Logica dos botões com personagens
+
+    // contadorObjetos < 20 ? setMaisPersonagens(false) : setMaisPersonagens(true);
+
+    // contadorObjetos === 0 ? setSemPersonagens(true) : setSemPersonagens(false);
+
+  }, [Page, FiltroSpecies, FiltroStatus, Nome],);
 
   const handleSelectStatus = (e: any) => {
+    setPage(1);
     setFiltroStatus(e);
   };
 
   const handleSelectSpecies = (e: any) => {
+    setPage(1);
     setFiltroSpecies(e);
   };
 
   return (
-    <main>
-      <nav className='h-20 items-center flex justify-around border-b-[0.1px] border-black'>
-        <div className='items-center '>
-          <p className='flex text-xl font-MontSerrat'>
-            Welcome to Earth C-137
-          </p>
-        </div>
-        <div className='flex gap-4'>
-          <Button variant='text' size='lg' color='light-green'>Characters</Button>
-          <Button variant='text' size='lg' color='light-green'>Episodes</Button>
-          <Button variant='text' size='lg' color='light-green'>Locations</Button>
-        </div>
-      </nav>
-      <div className='flex flex-col items-center pt-14 '>
+    <main className={DarkMode ? 'dark' : ''}>
+      <div className='flex flex-col items-center pt-14 dark:bg-gray-900  bg-gray-200'>
         <h1 className='text-7xl font-RickAndMorty pb-5 text-green-400'>The Rick and Morty Tracker</h1>
         <div className='w-[32rem] pt-5'>
           <Input
@@ -201,31 +162,31 @@ export const Home = () => {
       {SemPersonagens ? <section>
         <p>There is no such Characters, You are a crazy person</p>
       </section> :
-        <section className='w-screen'>
+        <section className='w-screen bg-gray-200 dark:bg-gray-900'>
           <div className='py-10 px-10 grid gap-3 grid-cols-4  justify-items-center'>
             {Obj.map(item =>
               <div key={item.id}
-                className='w-96 bg-cyan-50 flex flex-col items-center rounded-2xl px-2 py-2 flex-wrap'>
+                className='w-96 bg-teal-600 dark:bg-green-800 flex flex-col items-center rounded-2xl px-2 py-2 flex-wrap'>
                 <div>
                   <img src={item.image} className='pt-3 rounded-2xl w-80' />
                 </div>
                 <div className='pt-3'>
-                  <p className='text-2xl font-MontSerrat text-center'>{item.name}</p>
+                  <p className='text-2xl font-MontSerrat text-center dark:text-gray-200'>{item.name}</p>
                 </div>
                 <div className='flex py-2'>
                   <div className='flex flex-col w-40 items-center'>
-                    <p className=''>Status:</p>
-                    <p className='text-xl font-medium font-MontSerrat'>{item.status}</p>
+                    <p className='dark:text-gray-200'>Status:</p>
+                    <p className='text-xl font-medium font-MontSerrat dark:text-gray-200'>{item.status}</p>
                   </div>
                   <div className='flex flex-col w-40 items-center'>
-                    <p className=''>Specie:</p>
-                    <p className='text-xl font-medium font-MontSerrat text-center'>{item.species}</p>
+                    <p className='dark:text-gray-200'>Specie:</p>
+                    <p className='text-xl font-medium font-MontSerrat text-center dark:text-gray-200'>{item.species}</p>
                   </div>
                 </div>
                 <div className='flex pb-2 flex-col'>
                   <div className='flex flex-col items-center py-1'>
-                    <p>Origin:</p>
-                    <p className='text-xl font-medium font-MontSerrat'>{item.origin.name}</p>
+                    <p className='dark:text-gray-200'>Origin:</p>
+                    <p className='text-xl font-medium font-MontSerrat dark:text-gray-200'>{item.origin.name}</p>
                   </div>
                 </div>
               </div>
@@ -234,7 +195,7 @@ export const Home = () => {
         </section>
       }
       {MaisPersonagens &&
-        <div className='flex justify-center pb-5 gap-16'>
+        <div className='flex justify-center pb-5 gap-16 bg-gray-200 dark:bg-gray-900 items-center'>
           <Button
             variant='filled'
             size='lg'
@@ -243,6 +204,7 @@ export const Home = () => {
               setPage(Page - 1);
               window.scrollTo(0, 0);
             }}>Prev Page</Button>
+          <p className='text-xl font-MontSerrat text-green-600'>Page {Page}</p>
           <Button
             variant='filled'
             size='lg'
@@ -253,11 +215,6 @@ export const Home = () => {
             }}>Next Page</Button>
         </div>
       }
-      <footer>
-        <div className='flex justify-center border-t-[0.1px] border-black'>
-          <p className='py-6 text-2xl text-indigo-600'>Made with Madness, React and Tailwind</p>
-        </div>
-      </footer>
     </main>
   );
 };
