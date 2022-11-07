@@ -1,15 +1,16 @@
 
-export interface ILocation{
-      id: number,
-      name: string,
-      type: string,
-      dimension: string,
-      residents: [string],
-      url: string,
-      created: string
+export interface ILocation {
+  boolean: boolean
+  id: number,
+  name: string,
+  type: string,
+  dimension: string,
+  residents: [string],
+  url: string,
+  created: string
 }
 
-export interface FiltroLocation{
+export interface FiltroLocation {
   info: {
     count: number,
     pages: number,
@@ -22,9 +23,10 @@ export interface FiltroLocation{
       name: string,
       type: string,
       dimension: string,
-        residents: [string]
+      residents: [string]
       url: string,
       created: string
+      boolean?: boolean
     }
   ]
 }

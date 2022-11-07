@@ -1,15 +1,14 @@
 import { Button } from '@material-tailwind/react';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { IPersonagens } from '../../interfaces/personagens';
 import { Input, Select, Option } from '@material-tailwind/react';
 import { IFiltro } from 'interfaces/Filtro';
 import { http } from 'util/http';
 import { useRecoilValue } from 'recoil';
 import { darkMode } from 'state/atom';
+import  useRequest  from 'hooks/useRequest';
 
 export const Home = () => {
-
-  // variaveis para a  Querry 
 
   const [Obj, setObj] = useState<IPersonagens[]>([]);
   const [FiltroStatus, setFiltroStatus] = useState('');
@@ -19,91 +18,69 @@ export const Home = () => {
   const [Page, setPage] = useState(1);
   const [contador, setContador] = useState(0);
   const [contadorObjetos, setContadorObjetos] = useState(20);
-
-  // o resto 
-  
   const DarkMode = useRecoilValue(darkMode);
+  
+  function setter(data : IFiltro) {
+    setObj(data.results);
+    setContador(data.info.pages);
+    setContadorObjetos(data.info.count);
+  }
 
   useEffect(() => {
+
+    // console.log(useRequest(FiltroSpecies, FiltroStatus, Nome, Page));
     if (FiltroSpecies === '' && FiltroStatus === '' && Nome === '') {
       http.get(`character/?page=${Page}`)
         .then(resp => {
-          setObj(resp.data.results);
-          setContador(resp.data.info.pages);
-          setContadorObjetos(resp.data.info.count);
-          console.log('passei no primeiro if');
+          setter(resp.data);
         });
     }
     if (FiltroSpecies !== '' && FiltroStatus === '' && Nome === '') {
       http.get<IFiltro>(`character/?species=${FiltroSpecies}&page=${Page}`)
         .then(resp => {
-          setObj(resp.data.results);
-          setContador(resp.data.info.pages);
-          setContadorObjetos(resp.data.info.count);
-          console.log('passei no if de somente specie modificada');
-
+          setter(resp.data);
         }
         );
     }
     if (FiltroStatus !== '' && FiltroSpecies === '' && Nome === '') {
       http.get<IFiltro>(`character/?status=${FiltroStatus}&page=${Page}`)
         .then(resp => {
-          setObj(resp.data.results);
-          setContador(resp.data.info.pages);
-          setContadorObjetos(resp.data.info.count);
-          console.log('passei no if de somente specie modificada');
+          setter(resp.data);
         }
         );
     }
-
     if (FiltroSpecies !== '' && FiltroStatus !== '' && Nome === '') {
       http.get<IFiltro>(`character/?status=${FiltroStatus}&species=${FiltroSpecies}&page=${Page}`)
         .then(resp => {
-          setObj(resp.data.results);
-          setContador(resp.data.info.pages);
-          setContadorObjetos(resp.data.info.count);
-          console.log('passei no if de specie e status modificada');
+          setter(resp.data);
         }
         );
     }
-    if (FiltroSpecies !== 'all' && FiltroStatus !== 'all' && Nome !== '') {
+    if (FiltroSpecies !== '' && FiltroStatus !== '' && Nome !== '') {
       http.get<IFiltro>(`character/?status=${FiltroStatus}&species=${FiltroSpecies}&name=${Nome}&page=${Page}`)
         .then(resp => {
-          setObj(resp.data.results);
-          setContador(resp.data.info.pages);
-          setContadorObjetos(resp.data.info.count);
-          console.log('passei no if de todos modificados');
+          setter(resp.data);
         }
         );
     }
-    if (Nome !== '' && FiltroSpecies === 'all' && FiltroStatus === 'all') {
+    if (Nome !== '' && FiltroSpecies === '' && FiltroStatus === '') {
       http.get<IFiltro>(`character/?name=${Nome}&page=${Page}`)
         .then(resp => {
-          setObj(resp.data.results);
-          setContador(resp.data.info.pages);
-          setContadorObjetos(resp.data.info.count);
-          console.log('passei no if de nome modificado');
+          setter(resp.data);
         }
         );
     }
-    if (Nome !== '' && FiltroSpecies !== 'all' && FiltroStatus === 'all') {
+    if (Nome !== '' && FiltroSpecies !== '' && FiltroStatus === '') {
       http.get<IFiltro>(`character/?name=${Nome}&page=${Page}`)
         .then(resp => {
-          setObj(resp.data.results);
-          setContador(resp.data.info.pages);
-          setContadorObjetos(resp.data.info.count);
-          console.log('passei no if de nome e especie modificado');
+          setter(resp.data);
         }
         );
     }
-    if (Nome !== '' && FiltroSpecies === 'all' && FiltroStatus !== 'all') {
+    if (Nome !== '' && FiltroSpecies === '' && FiltroStatus !== '') {
       http.get<IFiltro>(`character/?name=${Nome}&page=${Page}`)
         .then(resp => {
-          setObj(resp.data.results);
-          setContador(resp.data.info.pages);
-          setContadorObjetos(resp.data.info.count);
-          console.log('passei no if de nome e status modificado');
-
+          setter(resp.data);
         }
         );
     }
@@ -123,8 +100,6 @@ export const Home = () => {
     contadorObjetos < 20 ? setMaisPersonagens(false) : setMaisPersonagens(true);
 
   }, [Page, FiltroSpecies, FiltroStatus, Nome],);
-
-  console.log(contador);
 
   const handleSelectStatus = (e: any) => {
     setPage(1);
@@ -155,7 +130,7 @@ export const Home = () => {
             label="Status"
             color='light-green'
             size='md'
-            onChange={handleSelectStatus}
+            onChange={handleSelectStatus} 
           >
             <Option value='alive' >Alive</Option>
             <Option value='dead' >Dead</Option>
