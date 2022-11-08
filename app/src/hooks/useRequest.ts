@@ -1,66 +1,47 @@
 import { IFiltro } from 'interfaces/Filtro';
 import { http } from 'util/http';
 
-function useRequest(FiltroSpecies: string, FiltroStatus: string, Nome: string, Page: number) {
-
+async function useRequest(FiltroSpecies: string, FiltroStatus: string, Nome: string, Page: number): Promise<IFiltro | undefined> {
   if (FiltroSpecies === '' && FiltroStatus === '' && Nome === '') {
-    const resposta = async function PegaResposta() {
-      http.get(`character/?page=${Page}`)
-        .then(resp => {
-          return (resp.data);
-        });
-    };
-    return resposta;
+    const resposta = await http.get(`character/?page=${Page}`);
+    return resposta.data;
   }
+
   if (FiltroSpecies !== '' && FiltroStatus === '' && Nome === '') {
-    http.get<IFiltro>(`character/?species=${FiltroSpecies}&page=${Page}`)
-      .then(resp => {
-        return (resp.data);
-      }
-      );
+    const resposta = await http.get<IFiltro>(`character/?species=${FiltroSpecies}&page=${Page}`);
+    return resposta.data;
   }
+
   if (FiltroStatus !== '' && FiltroSpecies === '' && Nome === '') {
-    http.get<IFiltro>(`character/?status=${FiltroStatus}&page=${Page}`)
-      .then(resp => {
-        return (resp.data);
-      }
-      );
+    const resposta = await http.get<IFiltro>(`character/?status=${FiltroStatus}&page=${Page}`);
+    return resposta.data;
   }
+
   if (FiltroSpecies !== '' && FiltroStatus !== '' && Nome === '') {
-    http.get<IFiltro>(`character/?status=${FiltroStatus}&species=${FiltroSpecies}&page=${Page}`)
-      .then(resp => {
-        return (resp.data);
-      }
-      );
+    const resposta = await http.get<IFiltro>(`character/?status=${FiltroStatus}&species=${FiltroSpecies}&page=${Page}`);
+    return resposta.data;
   }
+
   if (FiltroSpecies !== '' && FiltroStatus !== '' && Nome !== '') {
-    http.get<IFiltro>(`character/?status=${FiltroStatus}&species=${FiltroSpecies}&name=${Nome}&page=${Page}`)
-      .then(resp => {
-        return (resp.data);
-      }
-      );
+    const resposta = await http.get<IFiltro>(`character/?status=${FiltroStatus}&species=${FiltroSpecies}&name=${Nome}&page=${Page}`);
+    return resposta.data;
   }
+
   if (Nome !== '' && FiltroSpecies === '' && FiltroStatus === '') {
-    http.get<IFiltro>(`character/?name=${Nome}&page=${Page}`)
-      .then(resp => {
-        return (resp.data);
-      }
-      );
+    const resposta = await http.get<IFiltro>(`character/?name=${Nome}&page=${Page}`);
+    return resposta.data;
   }
+
   if (Nome !== '' && FiltroSpecies !== '' && FiltroStatus === '') {
-    http.get<IFiltro>(`character/?name=${Nome}&page=${Page}`)
-      .then(resp => {
-        return (resp.data);
-      }
-      );
+    const resposta = await http.get<IFiltro>(`character/?name=${Nome}&species=${FiltroSpecies}&page=${Page}`);
+    return resposta.data;
   }
+
   if (Nome !== '' && FiltroSpecies === '' && FiltroStatus !== '') {
-    http.get<IFiltro>(`character/?name=${Nome}&page=${Page}`)
-      .then(resp => {
-        return (resp.data);
-      }
-      );
+    const resposta = await http.get<IFiltro>(`character/?name=${Nome}&status=${FiltroStatus}&page=${Page}`);
+    return resposta.data;
   }
+
 }
 
 export default useRequest;

@@ -34,6 +34,7 @@ export const Locations = () => {
         setLocation(newArr);
       });
     setOpen(false);
+    
   }, [Page]);
 
   const handleOpen = (id: number) => {
@@ -68,7 +69,6 @@ export const Locations = () => {
                   <div className='flex flex-col gap-1'>
                     <p>Dimension: {item.dimension}</p>
                     <p>Type: {item.type}</p>
-                    <p>Type: {String(item.boolean)}</p>
                   </div>
                   <div>
                     <p></p>
