@@ -28,7 +28,7 @@ export const Filter = ({ DarkMode, setNome, setPage, setFiltroStatus, setFiltroS
           label='Search a character'
           size="lg"
           color={DarkMode ? 'light-green' : 'indigo'}
-          className='text-black'
+          className=' dark:text-white'
           onChange={e => setNome(e.target.value)}
         />
       </div>

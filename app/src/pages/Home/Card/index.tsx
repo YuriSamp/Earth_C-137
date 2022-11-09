@@ -2,19 +2,15 @@ import { IPersonagens } from 'interfaces/personagens';
 
 interface Props {
   Obj : IPersonagens[]
-  Number : number
 }
 
-export const Card = ({Obj,Number} : Props ) => {
-
-  //Eu só passei esse Number pq tava dando um erro que eu não consegui solucionar na hora, tenho que revisar isso aqui
-
+export const Card = ({Obj} : Props ) => {
   return (
     <section className='w-screen bg-gray-200 dark:bg-gray-900'>
       <div className='py-10 px-10 grid gap-3 grid-cols-4  justify-items-center'>
         {Obj.map(item =>
           <div key={item.id}
-            className='w-96 bg-teal-600 dark:bg-green-800 flex flex-col items-center rounded-2xl px-2 py-2 flex-wrap'>
+            className='w-96 bg-blue-600 dark:bg-green-800 flex flex-col items-center rounded-2xl px-2 py-2 flex-wrap'>
             <div>
               <img src={item.image} className='pt-3 rounded-2xl w-80' />
             </div>

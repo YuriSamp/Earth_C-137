@@ -4,7 +4,7 @@ import { http } from 'util/http';
 import { Accordion, AccordionHeader, AccordionBody, } from '@material-tailwind/react';
 import { FiltroLocation, ILocation } from 'interfaces/Location';
 import { useRecoilValue } from 'recoil';
-import { darkMode } from 'state/atom';
+import { darkMode } from 'util/state/atom';
 
 export const Locations = () => {
 
@@ -12,7 +12,7 @@ export const Locations = () => {
   const [open, setOpen] = useState(false);
   const [Page, setPage] = useState(1);
   const DarkMode = useRecoilValue(darkMode);
-
+  
   const contador = 7;
   if (Page > contador) {
     setPage(1);
@@ -34,7 +34,7 @@ export const Locations = () => {
         setLocation(newArr);
       });
     setOpen(false);
-    
+
   }, [Page]);
 
   const handleOpen = (id: number) => {
@@ -48,13 +48,11 @@ export const Locations = () => {
 
   return (
     <main className={DarkMode ? 'dark' : ''}>
-      <div className='flex flex-col items-center pt-14 bg-gray-200 dark:bg-gray-900  '>
-        <h1 className='text-7xl font-RickAndMorty pb-5 text-green-400'>Did you get any of that</h1>
-        <div className='w-[32rem] pt-5'>
-        </div>
+      <div className='flex flex-col items-center pt-14 bg-gray-200 dark:bg-gray-900 '>
+        <h1 className='text-7xl font-RickAndMorty pb-5 text-blue-600 dark:text-green-400'>Did you get any of that</h1>
       </div>
       <div>
-        <section className='py-10 px-20 grid gap-3 grid-cols-2 justify-items-center bg-gray-200 dark:bg-gray-900' >
+        <section className='py-10 px-20 grid gap-3 grid-cols-2 justify-items-center bg-gray-200 dark:bg-gray-900 min-h-[50rem]' >
           {Location.map(item =>
             <Accordion
               key={item.id}
@@ -62,7 +60,7 @@ export const Locations = () => {
               open={open === item.boolean}
             >
               <AccordionHeader onClick={() => handleOpen(item.id)}>
-                <p className='text-green-400'>{item.name}</p>
+                <p className='text-blue-600 dark:text-green-400'>{item.name}</p>
               </AccordionHeader>
               <AccordionBody>
                 <div className='flex flex-col'>
@@ -82,15 +80,15 @@ export const Locations = () => {
           <Button
             variant='filled'
             size='lg'
-            color='light-green'
+            color={DarkMode ? 'light-green' : 'indigo'}
             onClick={() => {
               setPage(Page - 1);
             }}>Prev Page</Button>
-          <p className='text-xl font-MontSerrat text-green-600'>Page {Page}</p>
+          <p className='text-xl font-MontSerrat text-blue-600  dark:text-green-600'>Page {Page}</p>
           <Button
             variant='filled'
             size='lg'
-            color='light-green'
+            color={DarkMode ? 'light-green' : 'indigo'}
             onClick={() => {
               setPage(Page + 1);
             }}>Next Page</Button>

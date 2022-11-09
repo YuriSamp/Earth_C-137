@@ -2,7 +2,7 @@ import { Button } from '@material-tailwind/react';
 import { useEffect, useState } from 'react';
 import { IPersonagens } from '../../interfaces/personagens';
 import { useRecoilValue } from 'recoil';
-import { darkMode } from 'state/atom';
+import { darkMode } from 'util/state/atom';
 import useRequest from 'hooks/useRequest';
 import { Filter } from './Filter';
 import { Card } from './Card';
@@ -20,13 +20,19 @@ export const Home = () => {
   const [contadorObjetos, setContadorObjetos] = useState(20);
   const DarkMode = useRecoilValue(darkMode);
 
+  
   useEffect(() => {
+
     const dados = useRequest(FiltroSpecies, FiltroStatus, Nome, Page);
     dados.then(data => {
-      if (data) {
+      if (data !== undefined) {
         setObj(data.results);
         setContador(data.info.pages);
         setContadorObjetos(data.info.count);
+        setSemPersonagens(false);
+      }
+      else {
+        setSemPersonagens(true);
       }
     });
 
@@ -39,14 +45,13 @@ export const Home = () => {
     }
 
     contadorObjetos < 20 ? setMaisPersonagens(false) : setMaisPersonagens(true);
-    contadorObjetos === 0 ? setSemPersonagens(true) : setSemPersonagens(false);
 
   }, [Page, FiltroSpecies, FiltroStatus, Nome],);
 
   return (
     <main className={DarkMode ? 'dark' : ''}>
       <div className='flex flex-col items-center pt-14 dark:bg-gray-900  bg-gray-200'>
-        <h1 className='text-7xl font-RickAndMorty pb-5 text-teal-600 dark:text-green-400'>The Rick and Morty Tracker</h1>
+        <h1 className='text-3xl xl:text-7xl font-RickAndMorty pb-5 text-blue-600 dark:text-green-400'>The Rick and Morty Tracker</h1>
         <Filter
           DarkMode={DarkMode}
           setNome={setNome}
@@ -55,24 +60,32 @@ export const Home = () => {
           setFiltroStatus={setFiltroStatus}
         />
       </div>
-      <Card
-        Obj={Obj}
-        Number={1}/>
+      {SemPersonagens ?
+        <section>
+          <div className='flex flex-col items-center justify-center pt-14 dark:bg-gray-900  bg-gray-200 h-[39rem]'>
+            <h1 className='text-2xl xl:text-7xl font-RickAndMorty pb-5 text-blue-600 dark:text-green-400'>There is nothing here bro</h1>
+          </div>
+        </section>
+        : 
+        <Card
+          Obj={Obj}
+        />
+      }
       {MaisPersonagens &&
         <div className='flex justify-center pb-5 gap-16 bg-gray-200 dark:bg-gray-900 items-center'>
           <Button
             variant='filled'
             size='lg'
-            color='light-green'
+            color={DarkMode ? 'light-green' : 'indigo'}
             onClick={() => {
               setPage(Page - 1);
               window.scrollTo(0, 0);
             }}>Prev Page</Button>
-          <p className='text-xl font-MontSerrat text-green-600'>Page {Page}</p>
+          <p className='text-xl font-MontSerrat text-blue-600  dark:text-green-600'>Page {Page}</p>
           <Button
             variant='filled'
             size='lg'
-            color='light-green'
+            color={DarkMode ? 'light-green' : 'indigo'}
             onClick={() => {
               setPage(Page + 1);
               window.scrollTo(0, 0);
