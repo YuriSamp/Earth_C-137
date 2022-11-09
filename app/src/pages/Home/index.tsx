@@ -20,7 +20,6 @@ export const Home = () => {
   const [contadorObjetos, setContadorObjetos] = useState(20);
   const DarkMode = useRecoilValue(darkMode);
 
-  
   useEffect(() => {
 
     const dados = useRequest(FiltroSpecies, FiltroStatus, Nome, Page);
