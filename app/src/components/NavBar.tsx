@@ -9,9 +9,9 @@ export const NavBar = () => {
 
   return (
     <nav className={DarkMode ? 'dark' : ''} >
-      <div className='h-20 items-center flex justify-around  border-black bg-blue-600 dark:bg-gray-900 '>
+      <div className='h-20 items-center flex justify-around  border-black bg-cyan-900 dark:bg-gray-900 '>
         <div className='items-center '>
-          <p className='hidden xl:flex xl:text-2xl font-MontSerrat text-gray-100 dark:text-green-600  '>
+          <p className='hidden md:flex md:text-2xl font-MontSerrat text-gray-100 dark:text-green-600  '>
             Welcome to Earth C-137
           </p>
         </div>
