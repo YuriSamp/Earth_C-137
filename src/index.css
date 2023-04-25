@@ -1,0 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'RaM';
+  src: local('get_schwifty'), url('./fonts/get_schwifty.ttf') format('truetype');
+}
