@@ -61,7 +61,7 @@ export const Locations = () => {
               </AccordionHeader>
               <AccordionBody>
                 <div className='flex flex-col'>
-                  <div className='flex flex-col gap-1'>
+                  <div className='flex flex-col gap-1 text-white'>
                     <p>Dimension: {item.dimension}</p>
                     <p>Type: {item.type}</p>
                   </div>
