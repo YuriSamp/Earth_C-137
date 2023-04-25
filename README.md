@@ -10,7 +10,7 @@ Link pro app na vercel: https://earth-c-137.vercel.app
 Um pequeno Preview do layout
 </p>
 
-![Rick-and-morty](https://user-images.githubusercontent.com/103132957/201255441-9df703be-2561-4595-a91e-bd21ad965b46.png)
+![image](https://user-images.githubusercontent.com/103132957/234320404-fa5736fb-ff29-4e96-80ad-2b5378b206d1.png)
 
 ## Quais as dificuldades que enfrentei?
 
@@ -20,7 +20,6 @@ Eu nunca tive um contato tão profundo com o hook useEffect no React, como eu ti
 
 <ul>
   <li>react-router-dom</li>
-  <li>recoil</li>
   <li>Axios</li>
 </ul>
        
