@@ -32,7 +32,7 @@ export const Filter = ({ setNome, setPage, setFiltroStatus, setFiltroSpecies }: 
           onChange={e => setNome(e.target.value)}
         />
       </div>
-      <div className='flex py-3 gap-1 sm:gap-5'>
+      <div className='flex flex-col sm:flex-row py-3 gap-4 sm:gap-5'>
         <div>
           <Select
             variant="outlined"

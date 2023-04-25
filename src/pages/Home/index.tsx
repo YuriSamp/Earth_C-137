@@ -1,8 +1,6 @@
 import { Button } from '@material-tailwind/react';
 import { useEffect, useState } from 'react';
 import { IPersonagens } from '../../interfaces/personagens';
-import { useRecoilValue } from 'recoil';
-import { darkMode } from 'util/state/atom';
 import useRequest from 'hooks/useRequest';
 import { Filter } from './Filter';
 import { Card } from './Card';
@@ -49,7 +47,7 @@ export const Home = () => {
   return (
     <main >
       <div className='flex flex-col items-center pt-14 bg-gray-900 '>
-        <h1 className='text-3xl md:text-5xl xl:text-7xl font-RickAndMorty pb-5 text-green-400'>The Rick and Morty Tracker</h1>
+        <h1 className='text-2xl sm:text-3xl md:text-5xl xl:text-7xl font-RickAndMorty pb-5 text-green-400'>The Rick and Morty Tracker</h1>
         <Filter
           setNome={setNome}
           setPage={setPage}
@@ -69,7 +67,7 @@ export const Home = () => {
         />
       }
       {MaisPersonagens &&
-        <div className='flex justify-center pb-5 pt-5 gap-8 sm:gap-16 bg-gray-900 items-center'>
+        <div className='flex justify-center pb-5 pt-5 gap-3 sm:gap-16 bg-gray-900 items-center'>
           <Button
             variant='filled'
             size='lg'

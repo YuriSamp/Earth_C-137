@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react';
 import { http } from 'util/http';
 import { Accordion, AccordionHeader, AccordionBody, } from '@material-tailwind/react';
 import { FiltroLocation, ILocation } from 'interfaces/Location';
-import { useRecoilValue } from 'recoil';
 
 export const Locations = () => {
 
@@ -54,7 +53,7 @@ export const Locations = () => {
           {Location.map(item =>
             <Accordion
               key={item.id}
-              className='px-10 w-56 md:w-[40rem]'
+              className='px-10 w-96 md:w-[40rem]'
               open={open === item.boolean}
             >
               <AccordionHeader onClick={() => handleOpen(item.id)} id='locationDisplay' >
@@ -74,7 +73,7 @@ export const Locations = () => {
             </Accordion>
           )}
         </section>
-        <div className='flex justify-center pb-5 gap-8 sm:gap-16 bg-gray-900 items-center'>
+        <div className='flex justify-center pb-5 gap-3 sm:gap-16 bg-gray-900 items-center'>
           <Button
             variant='filled'
             size='lg'
