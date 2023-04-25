@@ -49,7 +49,7 @@ export const Locations = () => {
         <h1 className='text-3xl md:text-5xl lg:text-7xl font-RickAndMorty pb-5 text-green-400'>Did you get any of that</h1>
       </div>
       <div>
-        <section className='py-10 px-20 grid gap-3 grid-cols-1 lg:grid-cols-2 justify-items-center bg-gray-900 min-h-[50rem]' >
+        <section className='py-10 px-20 grid gap-3 grid-cols-1 2xl:grid-cols-2 justify-items-center bg-gray-900 min-h-[50rem]' >
           {Location.map(item =>
             <Accordion
               key={item.id}
