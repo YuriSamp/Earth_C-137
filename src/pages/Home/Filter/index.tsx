@@ -1,14 +1,13 @@
 import { Input, Select, Option } from '@material-tailwind/react';
 
 interface Props {
-  DarkMode: boolean,
   setNome: React.Dispatch<React.SetStateAction<string>>,
   setPage: React.Dispatch<React.SetStateAction<number>>,
   setFiltroSpecies: React.Dispatch<React.SetStateAction<string>>
   setFiltroStatus: React.Dispatch<React.SetStateAction<string>>
 }
 
-export const Filter = ({ DarkMode, setNome, setPage, setFiltroStatus, setFiltroSpecies }: Props) => {
+export const Filter = ({ setNome, setPage, setFiltroStatus, setFiltroSpecies }: Props) => {
 
   const handleSelectStatus = (e: any) => {
     setPage(1);
@@ -26,8 +25,9 @@ export const Filter = ({ DarkMode, setNome, setPage, setFiltroStatus, setFiltroS
         <Input
           variant='outlined'
           label='Search a character'
+          data-testid='serachInput'
           size="lg"
-          color={DarkMode ? 'light-green' : 'indigo'}
+          color='light-green'
           className=' dark:text-white'
           onChange={e => setNome(e.target.value)}
         />
@@ -37,11 +37,12 @@ export const Filter = ({ DarkMode, setNome, setPage, setFiltroStatus, setFiltroS
           <Select
             variant="outlined"
             label="Status"
-            color={DarkMode ? 'light-green' : 'indigo'}
+            data-testid='Status'
+            color='light-green'
             size='md'
             onChange={handleSelectStatus}
           >
-            <Option value='alive' >Alive</Option>
+            <Option value='alive' data-testid='alive' >Alive</Option>
             <Option value='dead' >Dead</Option>
             <Option value='unknown'>Unknown</Option>
             <Option value=''>All</Option>
@@ -51,8 +52,9 @@ export const Filter = ({ DarkMode, setNome, setPage, setFiltroStatus, setFiltroS
           <Select
             variant="outlined"
             label="Species"
+            data-testid='Species'
             size='md'
-            color={DarkMode ? 'light-green' : 'indigo'}
+            color='light-green'
             onChange={handleSelectSpecies}>
             <Option value='human'>Human</Option>
             <Option value='alien'>Alien</Option>

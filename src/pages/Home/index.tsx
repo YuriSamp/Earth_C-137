@@ -18,7 +18,6 @@ export const Home = () => {
   const [Page, setPage] = useState(1);
   const [contador, setContador] = useState(0);
   const [contadorObjetos, setContadorObjetos] = useState(20);
-  const DarkMode = useRecoilValue(darkMode);
 
   useEffect(() => {
 
@@ -48,11 +47,10 @@ export const Home = () => {
   }, [Page, FiltroSpecies, FiltroStatus, Nome],);
 
   return (
-    <main className={DarkMode ? 'dark' : ''}>
-      <div className='flex flex-col items-center pt-14 dark:bg-gray-900  bg-gray-200'>
-        <h1 className='text-3xl md:text-5xl xl:text-7xl font-RickAndMorty pb-5 text-cyan-900 dark:text-green-400'>The Rick and Morty Tracker</h1>
+    <main >
+      <div className='flex flex-col items-center pt-14 bg-gray-900 '>
+        <h1 className='text-3xl md:text-5xl xl:text-7xl font-RickAndMorty pb-5 text-green-400'>The Rick and Morty Tracker</h1>
         <Filter
-          DarkMode={DarkMode}
           setNome={setNome}
           setPage={setPage}
           setFiltroSpecies={setFiltroSpecies}
@@ -61,8 +59,8 @@ export const Home = () => {
       </div>
       {SemPersonagens ?
         <section>
-          <div className='flex flex-col items-center justify-center pt-14 dark:bg-gray-900  bg-gray-200 h-[39rem]'>
-            <h1 className='text-2xl md:text-5xl xl:text-7xl font-RickAndMorty pb-5 text-cyan-900 dark:text-green-400'>There is nothing here bro</h1>
+          <div className='flex flex-col items-center justify-center pt-14 bg-gray-900 h-[39rem]'>
+            <h1 className='text-2xl md:text-5xl xl:text-7xl font-RickAndMorty pb-5 text-green-400'>There is nothing here bro</h1>
           </div>
         </section>
         :
@@ -71,7 +69,7 @@ export const Home = () => {
         />
       }
       {MaisPersonagens &&
-        <div className='flex justify-center pb-5 pt-5 gap-8 sm:gap-16 bg-gray-200 dark:bg-gray-900 items-center'>
+        <div className='flex justify-center pb-5 pt-5 gap-8 sm:gap-16 bg-gray-900 items-center'>
           <Button
             variant='filled'
             size='lg'
@@ -80,7 +78,7 @@ export const Home = () => {
               setPage(Page - 1);
               window.scrollTo(0, 0);
             }}>Prev Page</Button>
-          <p className='text-xl font-MontSerrat text-cyan-900  dark:text-green-600'>Page {Page}</p>
+          <p className='text-xl font-MontSerrat text-green-600'>Page {Page}</p>
           <Button
             variant='filled'
             size='lg'
