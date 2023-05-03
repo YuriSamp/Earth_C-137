@@ -1,13 +1,14 @@
-import { Button } from '@material-tailwind/react';
 import { useEffect, useState } from 'react';
 import { IPersonagens } from '../../interfaces/personagens';
 import useRequest from 'hooks/useRequest';
 import { Filter } from './Filter';
 import { Card } from './Card';
+import { Pagination } from 'components/pagination';
+import { useQuery } from '@tanstack/react-query';
 
 export const Home = () => {
 
-  const [Obj, setObj] = useState<IPersonagens[]>([]);
+  const [Characters, setCharacters] = useState<IPersonagens[]>([]);
   const [FiltroStatus, setFiltroStatus] = useState('');
   const [FiltroSpecies, setFiltroSpecies] = useState('');
   const [Nome, setNome] = useState('');
@@ -17,32 +18,28 @@ export const Home = () => {
   const [contador, setContador] = useState(0);
   const [contadorObjetos, setContadorObjetos] = useState(20);
 
+  const { isLoading, data, } = useQuery({
+    queryKey: ['projects', FiltroSpecies, FiltroStatus, Nome, Page],
+    queryFn: () => useRequest(FiltroSpecies, FiltroStatus, Nome, Page),
+    keepPreviousData: true
+  });
+
   useEffect(() => {
-
-    const dados = useRequest(FiltroSpecies, FiltroStatus, Nome, Page);
-    dados.then(data => {
-      if (data !== undefined) {
-        setObj(data.results);
-        setContador(data.info.pages);
-        setContadorObjetos(data.info.count);
-        setSemPersonagens(false);
-      }
-      else {
-        setSemPersonagens(true);
-      }
-    });
-
-    if (Page > contador) {
-      setPage(1);
+    if (data !== undefined) {
+      setCharacters(data.results);
+      setContador(data.info.pages);
+      setContadorObjetos(data.info.count);
+      setSemPersonagens(false);
+    }
+    else {
+      setSemPersonagens(true);
     }
 
-    if (Page < 1) {
-      setPage(contador);
-    }
-
+    Page > contador && setPage(1);
+    Page < 1 && setPage(contador);
     contadorObjetos < 20 ? setMaisPersonagens(false) : setMaisPersonagens(true);
 
-  }, [Page, FiltroSpecies, FiltroStatus, Nome],);
+  }, [data]);
 
   return (
     <main >
@@ -62,30 +59,20 @@ export const Home = () => {
           </div>
         </section>
         :
-        <Card
-          Obj={Obj}
-        />
+        <Card Obj={Characters} />
       }
       {MaisPersonagens &&
-        <div className='flex justify-center pb-5 pt-5 gap-3 sm:gap-16 bg-gray-900 items-center'>
-          <Button
-            variant='filled'
-            size='lg'
-            color='light-green'
-            onClick={() => {
-              setPage(Page - 1);
-              window.scrollTo(0, 0);
-            }}>Prev Page</Button>
-          <p className='text-xl font-MontSerrat text-green-600'>Page {Page}</p>
-          <Button
-            variant='filled'
-            size='lg'
-            color='light-green'
-            onClick={() => {
-              setPage(Page + 1);
-              window.scrollTo(0, 0);
-            }}>Next Page</Button>
-        </div>
+        <Pagination
+          decrease={() => {
+            setPage(Page - 1);
+            window.scrollTo({ top: 0, left: 0, behavior: 'smooth', });
+          }}
+          increase={() => {
+            setPage(Page + 1);
+            window.scrollTo({ top: 0, left: 0, behavior: 'smooth', });
+          }}
+          page={Page}
+        />
       }
     </main>
   );

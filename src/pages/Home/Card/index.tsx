@@ -12,7 +12,7 @@ export const Card = ({ Obj }: Props) => {
           <div key={item.id}
             className='w-80  bg-green-800 flex flex-col items-center rounded-2xl py-2 flex-wrap px-0 text-lg'>
             <div>
-              <img src={item.image} className='pt-3 rounded-2xl w-64' />
+              <img src={item.image} alt={item.name} className='pt-3 rounded-2xl w-64' />
             </div>
             <div className='pt-3'>
               <p className='text-2xl font-MontSerrat text-center '>{item.name}</p>
