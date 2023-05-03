@@ -5,6 +5,7 @@ import { Filter } from './Filter';
 import { Card } from './Card';
 import { Pagination } from 'components/pagination';
 import { useQuery } from '@tanstack/react-query';
+import { useDebounce } from 'hooks/useDebounce';
 
 export const Home = () => {
 
@@ -12,14 +13,17 @@ export const Home = () => {
   const [FiltroStatus, setFiltroStatus] = useState('');
   const [FiltroSpecies, setFiltroSpecies] = useState('');
   const [Nome, setNome] = useState('');
+
+  const debouncedName = useDebounce<string>(Nome, 500);
+
   const [MaisPersonagens, setMaisPersonagens] = useState(true);
   const [SemPersonagens, setSemPersonagens] = useState(false);
   const [Page, setPage] = useState(1);
   const [contador, setContador] = useState(0);
   const [contadorObjetos, setContadorObjetos] = useState(20);
 
-  const { isLoading, data, } = useQuery({
-    queryKey: ['projects', FiltroSpecies, FiltroStatus, Nome, Page],
+  const { data } = useQuery({
+    queryKey: ['projects', FiltroSpecies, FiltroStatus, debouncedName, Page],
     queryFn: () => useRequest(FiltroSpecies, FiltroStatus, Nome, Page),
     keepPreviousData: true
   });
@@ -38,7 +42,6 @@ export const Home = () => {
     Page > contador && setPage(1);
     Page < 1 && setPage(contador);
     contadorObjetos < 20 ? setMaisPersonagens(false) : setMaisPersonagens(true);
-
   }, [data]);
 
   return (
