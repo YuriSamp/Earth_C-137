@@ -1,14 +1,15 @@
-import { Suspense, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { IPersonagens } from '../../interfaces/personagens';
 import useRequest from 'hooks/useRequest';
 import { Filter } from './Filter';
 import { Card } from './Card';
 import { Pagination } from 'components/pagination';
 import { SuspenseCard } from './Card/suspenseCard';
+import { useQuery } from '@tanstack/react-query';
 
 export const Home = () => {
 
-  const [Obj, setObj] = useState<IPersonagens[]>([]);
+  const [Characters, setCharacters] = useState<IPersonagens[]>([]);
   const [FiltroStatus, setFiltroStatus] = useState('');
   const [FiltroSpecies, setFiltroSpecies] = useState('');
   const [Nome, setNome] = useState('');
@@ -18,32 +19,28 @@ export const Home = () => {
   const [contador, setContador] = useState(0);
   const [contadorObjetos, setContadorObjetos] = useState(20);
 
+  const { isLoading, data, } = useQuery({
+    queryKey: ['projects', FiltroSpecies, FiltroStatus, Nome, Page],
+    queryFn: () => useRequest(FiltroSpecies, FiltroStatus, Nome, Page),
+    keepPreviousData: true
+  });
+
   useEffect(() => {
-
-    const dados = useRequest(FiltroSpecies, FiltroStatus, Nome, Page);
-    dados.then(data => {
-      if (data !== undefined) {
-        setObj(data.results);
-        setContador(data.info.pages);
-        setContadorObjetos(data.info.count);
-        setSemPersonagens(false);
-      }
-      else {
-        setSemPersonagens(true);
-      }
-    });
-
-    if (Page > contador) {
-      setPage(1);
+    if (data !== undefined) {
+      setCharacters(data.results);
+      setContador(data.info.pages);
+      setContadorObjetos(data.info.count);
+      setSemPersonagens(false);
+    }
+    else {
+      setSemPersonagens(true);
     }
 
-    if (Page < 1) {
-      setPage(contador);
-    }
-
+    Page > contador && setPage(1);
+    Page < 1 && setPage(contador);
     contadorObjetos < 20 ? setMaisPersonagens(false) : setMaisPersonagens(true);
 
-  }, [Page, FiltroSpecies, FiltroStatus, Nome],);
+  }, [data]);
 
   return (
     <main >
@@ -63,9 +60,7 @@ export const Home = () => {
           </div>
         </section>
         :
-        <Suspense fallback={<SuspenseCard />}>
-          <Card Obj={Obj} />
-        </Suspense>
+        <Card Obj={Characters} />
       }
       {MaisPersonagens &&
         <Pagination

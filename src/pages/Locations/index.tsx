@@ -53,7 +53,7 @@ export const Locations = () => {
           {Location.map(item =>
             <Accordion
               key={item.id}
-              className='px-10 w-96 md:w-[40rem]'
+              className='px-10 w-96 xl:w-[32rem] 2xl::w-[40rem]'
               open={open === item.boolean}
             >
               <AccordionHeader onClick={() => handleOpen(item.id)} id='locationDisplay' >

@@ -7,17 +7,12 @@ async function useRequest(
   Nome: string,
   Page: number
 ): Promise<IFiltro | undefined> {
-  try {
-    let queryString = Nome !== '' ? `name=${Nome}&` : '';
-    queryString += FiltroSpecies !== '' ? `species=${FiltroSpecies}&` : '';
-    queryString += FiltroStatus !== '' ? `status=${FiltroStatus}&` : '';
-    queryString += `page=${Page}`;
-    const resposta = await http.get<IFiltro>(`character/?${queryString}`);
-
-    return resposta.data;
-  } catch (error) {
-    return undefined;
-  }
+  let queryString = Nome !== '' ? `name=${Nome}&` : '';
+  queryString += FiltroSpecies !== '' ? `species=${FiltroSpecies}&` : '';
+  queryString += FiltroStatus !== '' ? `status=${FiltroStatus}&` : '';
+  queryString += `page=${Page}`;
+  const resposta = await http.get<IFiltro>(`character/?${queryString}`);
+  return resposta.data;
 }
 
 export default useRequest;

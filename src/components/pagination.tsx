@@ -1,5 +1,3 @@
-import { Button } from '@material-tailwind/react';
-
 interface props {
   increase: () => void,
   decrease: () => void,
@@ -9,17 +7,13 @@ interface props {
 export function Pagination({ decrease, increase, page }: props) {
   return (
     <div className='flex justify-center pb-5 gap-3 sm:gap-16 bg-gray-900 items-center'>
-      <Button
-        variant='filled'
-        size='lg'
-        color='light-green'
-        onClick={() => decrease()}>Prev Page</Button>
+      <button
+        className='text-white bg-[#8bc34A] px-5 py-3 rounded-lg text-lg font-sans'
+        onClick={() => decrease()}>Prev Page</button>
       <p className='text-xl font-MontSerrat text-green-600'>Page {page}</p>
-      <Button
-        variant='filled'
-        size='lg'
-        color='light-green'
-        onClick={() => increase()}>Next Page</Button>
+      <button
+        className='text-white bg-[#8bc34A] px-5 py-3 rounded-lg text-lg font-sans'
+        onClick={() => increase()}>Next Page</button>
     </div>
   );
 }
