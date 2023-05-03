@@ -29,7 +29,6 @@ export const Home = () => {
   });
 
   useEffect(() => {
-    console.log('eu fui chamado');
     if (data !== undefined) {
       setCharacters(data.results);
       setContador(data.info.pages);
