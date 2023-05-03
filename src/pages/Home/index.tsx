@@ -4,7 +4,6 @@ import useRequest from 'hooks/useRequest';
 import { Filter } from './Filter';
 import { Card } from './Card';
 import { Pagination } from 'components/pagination';
-import { SuspenseCard } from './Card/suspenseCard';
 import { useQuery } from '@tanstack/react-query';
 
 export const Home = () => {
