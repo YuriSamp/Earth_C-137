@@ -1,8 +1,8 @@
-import { Button } from '@material-tailwind/react';
 import { useState, useEffect } from 'react';
 import { http } from 'util/http';
 import { Accordion, AccordionHeader, AccordionBody, } from '@material-tailwind/react';
 import { FiltroLocation, ILocation } from 'interfaces/Location';
+import { Pagination } from 'components/pagination';
 
 export const Locations = () => {
 
@@ -73,23 +73,11 @@ export const Locations = () => {
             </Accordion>
           )}
         </section>
-        <div className='flex justify-center pb-5 gap-3 sm:gap-16 bg-gray-900 items-center'>
-          <Button
-            variant='filled'
-            size='lg'
-            color='light-green'
-            onClick={() => {
-              setPage(Page - 1);
-            }}>Prev Page</Button>
-          <p className='text-xl font-MontSerrat text-green-600'>Page {Page}</p>
-          <Button
-            variant='filled'
-            size='lg'
-            color='light-green'
-            onClick={() => {
-              setPage(Page + 1);
-            }}>Next Page</Button>
-        </div>
+        <Pagination
+          decrease={() => setPage(Page - 1)}
+          increase={() => setPage(Page + 1)}
+          page={Page}
+        />
       </div>
     </main>
   );
