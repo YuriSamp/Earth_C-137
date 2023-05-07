@@ -19,8 +19,10 @@ Eu nunca tive um contato tão profundo com o hook useEffect no React, como eu ti
 ## Quais dependencias usei no desenolvimento?
 
 <ul>
-  <li>react-router-dom</li>
+  <li>@tanstack/react-query</li>
   <li>Axios</li>
+  <li>Tailwind</li>
+  <li>Typescript</li>
 </ul>
        
 ## Agradecimentos
